@@ -1,48 +1,73 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
-  --primary-color: #3b82f6;
-  --primary-hover: #2563eb;
-  --bg-color: #f8fafc;
-  --card-bg: #ffffff;
-  --text-dark: #1e293b;
-  --text-muted: #64748b;
+  font-family: 'Outfit', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --primary-color: #4f46e5;
+  --primary-glow: rgba(79, 70, 229, 0.4);
+  --secondary-color: #ec4899;
+  --bg-color: #0f172a;
+  --card-bg: rgba(30, 41, 59, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --text-dark: #f8fafc;
+  --text-muted: #94a3b8;
+  
+  /* 3D Variables */
+  --perspective: 1200px;
 }
 
 html, body {
   scroll-behavior: smooth;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  background: var(--bg-color);
+  color: var(--text-dark);
+  perspective: var(--perspective);
 }
 
 body {
   margin: 0;
-  background: radial-gradient(circle at 10% 20%, rgb(255, 255, 255) 0%, rgb(235, 245, 255) 100%);
-  color: var(--text-dark);
-  font-family: 'Inter', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  background: fixed radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+              fixed radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
+              fixed radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+  min-height: 100vh;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 600;
-  color: var(--text-dark);
+/* 3D & Animation Utilities */
+.perspective-container {
+  perspective: var(--perspective);
+  transform-style: preserve-3d;
 }
 
-a {
-  text-decoration: none;
-  color: var(--primary-color);
-  transition: color 0.2s ease-in-out;
+.glass-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 
-a:hover {
-  color: var(--primary-hover);
+.text-glow {
+  text-shadow: 0 0 20px var(--primary-glow);
 }
 
-/* Card Enhancements */
+.floating {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+/* Override Bootstrap */
 .card {
-  border: none !important;
+  background: var(--card-bg) !important;
+  border: 1px solid var(--glass-border) !important;
+  backdrop-filter: blur(10px);
   border-radius: 16px !important;
-  background-color: var(--card-bg) !important;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
   transition: transform 0.3s ease, box-shadow 0.3s ease !important;
   overflow: hidden;

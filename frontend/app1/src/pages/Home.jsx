@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getActiveCourses } from "../services/courseService";
 import { getCourseImage } from "../utils/courseImages";
+import { motion } from "framer-motion";
+import Background3D from "../components/Background3D";
+import CourseCard from "../components/CourseCard";
 
 function Home() {
   const [courses, setCourses] = useState([]);
@@ -13,56 +16,71 @@ function Home() {
   }, []);
 
   return (
-    <>
-      <div className="text-center animate-fade-in-up py-5 mb-5" style={{ background: "transparent", minHeight: "45vh", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-        <h1 className="fw-bolder" style={{ fontSize: "3.5rem", letterSpacing: "-1px" }}>
-          Sunbeam Institute of <span style={{ color: "var(--primary-color)" }}>IT</span>
-        </h1>
-        <p className="lead text-muted mx-auto mt-3 mb-5" style={{ maxWidth: "600px", fontSize: "1.25rem" }}>
-          Industry focused IT training with strong placement support. Start your journey with our cutting-edge courses today.
-        </p>
-        <div>
-          <a href="#courses" className="btn btn-outline-primary rounded-pill px-4 py-2 shadow-sm fw-bold">
-            Explore Courses <i className="bi bi-arrow-down ms-1"></i> ↓
+    <div className="perspective-container">
+      <Background3D />
+      
+      {/* HERO SECTION */}
+      <motion.div 
+        initial={{ opacity: 0, z: -100 }}
+        animate={{ opacity: 1, z: 0 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="text-center py-5 mb-5 d-flex flex-column justify-content-center align-items-center"
+        style={{ minHeight: "60vh" }}
+      >
+        <motion.div
+           initial={{ scale: 0.9, opacity: 0 }}
+           animate={{ scale: 1, opacity: 1 }}
+           transition={{ delay: 0.2, duration: 0.8 }}
+        >
+          <h1 className="fw-bolder floating" style={{ fontSize: "clamp(2.5rem, 8vw, 4.5rem)", letterSpacing: "-2px" }}>
+            Sunbeam Institute of <span className="text-glow" style={{ color: "var(--primary-color)" }}>IT</span>
+          </h1>
+        </motion.div>
+
+        <motion.p 
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.4, duration: 0.8 }}
+          className="lead text-muted mx-auto mt-3 mb-5" 
+          style={{ maxWidth: "700px", fontSize: "1.3rem", fontWeight: "500" }}
+        >
+          Elevate your career with industry-focused IT training. Experience our cutting-edge courses transformed for the modern digital era.
+        </motion.p>
+        
+        <motion.div 
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.6, duration: 0.8 }}
+        >
+          <a href="#courses" className="btn btn-primary rounded-pill px-5 py-3 shadow-lg fw-bold border-0">
+            Start Learning Now
           </a>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
-      <div id="courses" className="container mt-5 pt-4">
-        <h3 className="text-center mb-5 fw-bold" style={{ fontSize: "2rem" }}>Available Courses</h3>
+      {/* COURSES SECTION */}
+      <div id="courses" className="container mt-5 pt-5 pb-5">
+        <motion.h3 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          className="text-center mb-5 fw-bold text-glow" 
+          style={{ fontSize: "2.5rem" }}
+        >
+          Interactive Courses
+        </motion.h3>
 
-        <div className="row justify-content-center">
-        {courses.map((course) => (
-          <div key={course.id} className="col-md-3 mb-4">
-            <div className="card shadow-sm h-100 text-center">
-              <img
-              src={getCourseImage(course.courseName)}
-              className="card-img-top"
-              style={{ height: "180px", objectFit: "cover" }}
-              alt={course.courseName}
-            />
-
-              <div className="card-body d-flex flex-column">
-                <h5 className="fw-bold text-dark mb-2">{course.courseName}</h5>
-                <p className="text-muted fw-semibold mb-4" style={{ fontSize: "0.85rem" }}>
-                  <i className="bi bi-calendar-event me-1"></i>
-                  Starts: {new Date(course.startDate).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" })}
-                </p>
-                <div className="mt-auto">
-                  <Link
-                    to={`/course/${course.id}`}
-                    className="btn btn-primary w-100 fw-bold shadow-sm"
-                  >
-                    View Details
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="row justify-content-center g-4">
+        {courses.map((course, index) => (
+          <CourseCard 
+            key={course.id} 
+            id={course.id} 
+            title={course.courseName} 
+            fee={course.fees || 0}
+          />
         ))}
       </div>
     </div>
-    </>
+    </div>
   );
 }
 
