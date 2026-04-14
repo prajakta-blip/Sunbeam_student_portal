@@ -1,0 +1,149 @@
+import { Link, useNavigate } from "react-router-dom";
+
+export default function AdminNavbar() {
+  const navigate = useNavigate();
+
+  // get logged-in user name (fallback Admin)
+  const user = localStorage.getItem("user")
+    ? JSON.parse(localStorage.getItem("user"))
+    : null;
+
+  const name = user?.name || user?.email || "Admin";
+
+  const logout = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
+
+  return (
+    <nav className="navbar navbar-expand-lg navbar-dark bg-primary px-3">
+
+      {/* LEFT SIDE MENUS (UNCHANGED) */}
+      <ul className="navbar-nav me-auto">
+
+        {/* DASHBOARD */}
+        <li className="nav-item">
+          <Link className="nav-link" to="/admin">
+            Dashboard
+          </Link>
+        </li>
+
+        {/* COURSES */}
+        <li className="nav-item dropdown">
+          <span
+            className="nav-link dropdown-toggle"
+            role="button"
+            data-bs-toggle="dropdown"
+          >
+            Courses
+          </span>
+
+          <ul className="dropdown-menu">
+            <li>
+              <Link className="dropdown-item" to="/admin/courses">
+                Get All Courses
+              </Link>
+            </li>
+            <li>
+              <Link className="dropdown-item" to="/admin/course/add">
+                Add Course
+              </Link>
+            </li>
+            <li>
+              <Link className="dropdown-item" to="/admin/course/update">
+                Update Course
+              </Link>
+            </li>
+            <li>
+              <Link className="dropdown-item text-danger" to="/admin/course/delete">
+                Delete Course
+              </Link>
+            </li>
+          </ul>
+        </li>
+
+        {/* VIDEOS */}
+        <li className="nav-item dropdown">
+          <span
+            className="nav-link dropdown-toggle"
+            role="button"
+            data-bs-toggle="dropdown"
+          >
+            Videos
+          </span>
+
+          <ul className="dropdown-menu">
+            <li>
+              <Link className="dropdown-item" to="/admin/videos">
+                Get All Videos
+              </Link>
+            </li>
+            <li>
+              <Link className="dropdown-item" to="/admin/video/add">
+                Add Video
+              </Link>
+            </li>
+            <li>
+              <Link className="dropdown-item" to="/admin/video/edit">
+                Edit Video
+              </Link>
+            </li>
+          </ul>
+        </li>
+
+        {/* STUDENTS */}
+        <li className="nav-item">
+          <Link className="nav-link" to="/admin/students">
+            Students
+          </Link>
+        </li>
+      </ul>
+
+      {/* RIGHT SIDE PROFILE DROPDOWN (NEW – ADDED ONLY) */}
+      <ul className="navbar-nav">
+        <li className="nav-item dropdown">
+          <button
+            className="btn btn-outline-light dropdown-toggle"
+            data-bs-toggle="dropdown"
+          >
+            {name}
+          </button>
+
+          <ul className="dropdown-menu dropdown-menu-end">
+            <li>
+              <button
+                className="dropdown-item"
+                onClick={() => navigate("/profile/update")}
+              >
+                Update Profile
+              </button>
+            </li>
+
+            <li>
+              <button
+                className="dropdown-item"
+                onClick={() => navigate("/profile/change-password")}
+              >
+                Change Password
+              </button>
+            </li>
+
+            <li>
+              <hr className="dropdown-divider" />
+            </li>
+
+            <li>
+              <button
+                className="dropdown-item text-danger"
+                onClick={logout}
+              >
+                Logout
+              </button>
+            </li>
+          </ul>
+        </li>
+      </ul>
+
+    </nav>
+  );
+}
